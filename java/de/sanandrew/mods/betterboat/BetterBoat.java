@@ -19,7 +19,6 @@ import cpw.mods.fml.relauncher.Side;
 import de.sanandrew.mods.betterboat.entity.EntityBetterBoat;
 import de.sanandrew.mods.betterboat.entity.EntitySpawnHandler;
 import de.sanandrew.mods.betterboat.network.PacketSendBoatPos;
-import net.darkhax.bookshelf.lib.util.Utilities;
 import net.minecraft.entity.EntityList;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -43,9 +42,9 @@ public class BetterBoat
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_CHANNEL);
-
-        Utilities.registerMessage(network, PacketSendBoatPos.class, 0, Side.CLIENT);
-
+		
+		network.registerMessage(PacketSendBoatPos.class, PacketSendBoatPos.class, 0, Side.CLIENT);
+		
         MinecraftForge.EVENT_BUS.register(new EntitySpawnHandler());
     }
 

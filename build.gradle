@@ -23,11 +23,6 @@ buildscript {
     }
 }
 
-task downloadBookshelf(type: LibDownloader) {
-	sourceUrl = 'http://minecraft.curseforge.com/projects/bookshelf/files/2274153/download'
-    target = file('libs/Bookshelf.jar')
-}
-
 apply plugin: 'idea'
 idea {
     module {
@@ -37,7 +32,7 @@ idea {
 
 apply plugin: 'forge'
 
-version = "1.7.10-1.1.0"
+version = "1.7.10-1.1.0-minimal"
 group = "de.sanandrew.mods"
 archivesBaseName = "BetterBoat"
 
@@ -45,9 +40,6 @@ minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "minecraft"
 }
-
-setupDecompWorkspace.finalizedBy downloadBookshelf
-setupDevWorkspace.finalizedBy downloadBookshelf
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
@@ -104,29 +96,4 @@ artifacts {
     archives sourceJar
     archives jar
     deployDev deobfJar
-}
-
-project.ext {
-    releaseRepoUrl = "file://${project(':').projectDir}/maven-repo/"
-}
-
-uploadDeployDev {
-    repositories.mavenDeployer {
-        pom.artifactId = project.name
-        pom.version = project.version + '-deobf'
-        repository(url: project.releaseRepoUrl)
-    }
-}
-
-class LibDownloader extends DefaultTask {
-    @Input
-    String sourceUrl
-
-    @OutputFile
-    File target
-
-    @TaskAction
-    void download() {
-       ant.get(src: sourceUrl, dest: target)
-    }
 }
